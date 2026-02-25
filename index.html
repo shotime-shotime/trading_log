@@ -9,13 +9,8 @@
         :root { --primary: #0078d4; --success: #28a745; --danger: #dc3545; --bg: #f4f7f9; --gold: #ffd700; --dark: #1a1a1a; }
         body { font-family: 'Segoe UI', 'Meiryo', sans-serif; background: var(--bg); margin: 0; padding: 0; color: #333; -webkit-tap-highlight-color: transparent; }
         .container { max-width: 1000px; margin: auto; padding: 15px; }
-        
         button, select, input, .goal-header span { cursor: pointer; touch-action: manipulation; }
-
-        .period-controls { 
-            background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            margin-bottom: 15px; position: sticky; top: 0; z-index: 101; 
-        }
+        .period-controls { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; position: sticky; top: 0; z-index: 101; }
         .period-nav { display: flex; gap: 5px; margin-bottom: 12px; }
         .period-nav button { flex: 1; padding: 10px; border: none; background: #eee; border-radius: 8px; font-weight: bold; color: #666; transition: 0.3s; font-size: 13px; }
         .period-nav button.active { background: var(--primary); color: white; }
@@ -23,60 +18,51 @@
         .jump-btn { background: var(--dark); color: white; border: none; padding: 10px 12px; border-radius: 6px; flex-shrink: 0; }
         #history-select { padding: 9px; border-radius: 6px; border: 1px solid #ddd; flex-grow: 1; width: 100%; }
         .period-display { text-align: center; font-size: 12px; font-weight: bold; color: var(--primary); margin-top: 10px; background: #eef6fc; padding: 8px; border-radius: 20px; }
-
-        .asset-summary-bar { 
-            background: var(--dark); color: white; padding: 15px; border-radius: 12px; 
-            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; 
-            position: sticky; top: 140px; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-bottom: 4px solid var(--primary); 
-        }
+        .asset-summary-bar { background: var(--dark); color: white; padding: 15px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; position: sticky; top: 140px; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-bottom: 4px solid var(--primary); }
         .asset-summary-bar .item { text-align: center; }
         .asset-summary-bar label { font-size: 10px; color: #aaa; display: block; margin-bottom: 3px; }
         .asset-summary-bar .value { font-size: 16px; font-weight: bold; }
-
         .goal-container { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .goal-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: bold; }
         .progress-bg { background: #eee; height: 12px; border-radius: 6px; overflow: hidden; }
         .progress-bar { background: linear-gradient(90deg, var(--primary), #00c6ff); height: 100%; transition: 0.5s; width: 0%; }
-        
-        /* 目標設定用インライン入力 */
         #goal-edit-area { display: none; background: #f0f7ff; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
-
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         @media (max-width: 600px) { .analytics-grid { grid-template-columns: 1fr; } }
         .analytics-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .table-mini { width: 100%; font-size: 12px; border-collapse: collapse; }
         .table-mini th { text-align: left; color: #888; padding-bottom: 8px; border-bottom: 1px solid #eee; }
         .table-mini td { padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
-
         section { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
         h3 { margin-top: 0; font-size: 15px; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 15px; }
-        
         .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; border-left: 5px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.03); position: relative; border: 1px solid #eee; border-left-width: 5px; }
         .card.win { border-left-color: var(--success); }
         .card.loss { border-left-color: var(--danger); }
         .card-pl { font-size: 18px; font-weight: bold; margin-top: 5px; }
-
         .card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 5px; }
         .btn-mini { font-size: 10px; padding: 6px 10px; border: none; border-radius: 4px; font-weight: bold; }
         .btn-settle { background: var(--gold); color: #000; }
         .btn-edit { background: #e3f2fd; color: var(--primary); }
         .btn-delete { background: #ffebee; color: #c62828; }
-
         .edit-form { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         @media (min-width: 768px) { .form-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); } }
         .exec-row { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: 8px; margin-bottom: 8px; }
-
         .btn-main { background: var(--dark); color: white; width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; font-size: 15px; }
         input, select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; width: 100%; box-sizing: border-box; background: white; }
         .edit-mode-active { border: 2px solid var(--primary) !important; background: #f0f7ff !important; }
-        
-        .admin-section { text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd; }
-        .btn-admin { padding: 10px; font-size: 12px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; background: white; width: 100%; max-width: 250px; }
-        #delete-confirm-area { display: none; background: #fff0f0; border: 1px solid var(--danger); padding: 15px; border-radius: 12px; margin-top: 10px; }
-
+        .settle-mode-active { border: 2px solid var(--gold) !important; background: #fffdf0 !important; }
         .pl-plus { color: var(--success) !important; }
         .pl-minus { color: var(--danger) !important; }
+
+        /* Calendar Styles */
+        #calendar-view { display: none; background: white; border-radius: 12px; padding: 10px; margin-bottom: 20px; }
+        #calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .cal-day-head { text-align: center; font-size: 10px; font-weight: bold; color: #888; padding: 5px 0; }
+        .cal-cell { border: 1px solid #f0f0f0; min-height: 50px; padding: 2px; position: relative; display: flex; flex-direction: column; }
+        .cal-date { font-size: 10px; color: #999; }
+        .cal-pl { font-size: 8px; font-weight: bold; text-align: center; margin-top: auto; word-break: break-all; line-height: 1.1; }
+        #calendar-total { margin-top: 10px; text-align: right; font-weight: bold; font-size: 13px; border-top: 1px dashed #eee; padding-top: 8px; }
     </style>
 </head>
 <body>
@@ -113,7 +99,6 @@
                 <input type="number" id="goal-input-val" placeholder="1日の目標(円)">
                 <button class="btn-mini" style="background:var(--primary); color:white; width:70px;" onclick="applyGoal()">OK</button>
             </div>
-            <p style="font-size:10px; color:#666; margin:5px 0 0 0;">※日当を入力すると週・月・年も自動計算されます</p>
         </div>
         <div class="progress-bg"><div id="goal-bar" class="progress-bar"></div></div>
     </div>
@@ -139,11 +124,11 @@
                 <input type="text" id="h-code" placeholder="コード" onkeyup="searchStock('h')">
                 <input type="text" id="h-name" placeholder="銘柄名" readonly style="background:#eee">
                 <input type="text" id="h-sector" placeholder="セクター" readonly style="background:#eee">
-                <input type="number" id="h-qty" placeholder="株数">
+                <input type="number" id="h-qty" placeholder="株数" step="100">
                 <input type="number" id="h-buy" placeholder="取得単価">
                 <input type="number" id="h-now" placeholder="現在値">
             </div>
-            <button class="btn-main" style="background:var(--success)" onclick="saveHolding()">保有銘柄として保存</button>
+            <button class="btn-main" id="btn-h-save" style="background:var(--success)" onclick="saveHolding()">保有銘柄として保存</button>
             <button class="btn-main" style="background:#ccc; margin-top:5px;" onclick="hideHForm()">キャンセル</button>
         </div>
         <div id="holding-list"></div>
@@ -152,9 +137,8 @@
     <section id="t-section">
         <h3>📉 損益記録・編集</h3>
         <div class="edit-form" id="t-form-container">
-            <div id="settle-notice" style="display:none; color:var(--gold); background:#000; padding:10px; border-radius:4px; font-size:12px; margin-bottom:10px;">⚠️ 決済モード: 内容を確認して保存してください</div>
+            <div id="settle-notice" style="display:none; color:var(--gold); background:#000; padding:10px; border-radius:4px; font-size:12px; margin-bottom:10px;">⚠️ 決済モード: 枚数を調整して部分利確も可能です</div>
             <div id="edit-notice" style="display:none; color:white; background:var(--primary); padding:10px; border-radius:4px; font-size:12px; margin-bottom:10px;">📝 編集モード: 上書き保存します</div>
-            
             <div class="form-grid">
                 <input type="date" id="t-date">
                 <input type="text" id="t-code" placeholder="コード" onkeyup="searchStock('t')">
@@ -174,31 +158,22 @@
     </section>
 
     <h3>📜 履歴</h3>
-    <div id="history-list"></div>
-
-    <div class="admin-section">
-        <button class="btn-admin" onclick="refreshPastSectors()">🔄 最新マスタと同期</button>
-        <button class="btn-admin" style="color:red; border-color:red;" onclick="showDeleteConfirm()">⚠️ 全データ消去</button>
-        
-        <div id="delete-confirm-area">
-            <p style="font-size:12px; font-weight:bold; color:var(--danger); margin-bottom:10px;">【警告】すべてのデータを完全に消去します。よろしいですか？</p>
-            <button class="btn-main" style="background:var(--danger)" onclick="resetAllData()">はい、消去します</button>
-            <button class="btn-main" style="background:#999; margin-top:5px;" onclick="hideDeleteConfirm()">キャンセル</button>
-        </div>
+    <div id="calendar-view">
+        <div id="calendar-grid"></div>
+        <div id="calendar-total"></div>
     </div>
+    <div id="history-list"></div>
 </div>
 
 <script>
     let trades = JSON.parse(localStorage.getItem('trade_logs')) || [];
     let holdings = JSON.parse(localStorage.getItem('trade_holdings')) || [];
     let goals = JSON.parse(localStorage.getItem('trade_goals')) || {day:0, week:0, month:0, year:0};
-    
-    let hIdx = -1, tEditIdx = -1, mode = 'day', offset = 0, isSettleMode = false;
+    let hIdx = -1, tEditIdx = -1, mode = 'day', offset = 0, isSettleMode = false, hEditIdx = -1;
 
     window.onload = () => { 
         document.getElementById('t-date').valueAsDate = new Date();
-        changeMode('day'); 
-        resetTForm(); 
+        changeMode('day'); resetTForm(); 
     };
 
     function saveAll() {
@@ -207,30 +182,16 @@
         localStorage.setItem('trade_goals', JSON.stringify(goals));
     }
 
-    // --- 目標設定UI ---
     function toggleGoalEdit() {
         const area = document.getElementById('goal-edit-area');
         area.style.display = area.style.display === 'block' ? 'none' : 'block';
         document.getElementById('goal-input-val').value = goals.day || 0;
     }
-    function applyGoal() {
-        const dayGoal = parseInt(document.getElementById('goal-input-val').value) || 0;
-        goals.day = dayGoal; 
-        goals.week = dayGoal * 5; 
-        goals.month = dayGoal * 20; 
-        goals.year = dayGoal * 240;
-        saveAll();
-        document.getElementById('goal-edit-area').style.display = 'none';
-        render();
-    }
 
-    // --- 全データ削除UI ---
-    function showDeleteConfirm() { document.getElementById('delete-confirm-area').style.display = 'block'; }
-    function hideDeleteConfirm() { document.getElementById('delete-confirm-area').style.display = 'none'; }
-    function resetAllData() {
-        localStorage.clear();
-        alert("すべてのデータを削除しました。");
-        location.reload();
+    function applyGoal() {
+        const d = parseInt(document.getElementById('goal-input-val').value) || 0;
+        goals = { day: d, week: d*5, month: d*20, year: d*240 };
+        saveAll(); document.getElementById('goal-edit-area').style.display = 'none'; render();
     }
 
     function changeMode(m) { mode = m; offset = 0; updatePeriodUI(); }
@@ -238,7 +199,6 @@
     function jumpToHistory(v) { offset = parseInt(v); updatePeriodUI(); }
 
     function updatePeriodUI() {
-        document.querySelectorAll('.period-nav button').forEach(b => b.classList.toggle('active', b.id === `btn-${mode}`));
         const sel = document.getElementById('history-select'); sel.innerHTML = "";
         for (let i = 0; i >= -60; i--) {
             const opt = document.createElement('option'); opt.value = i; opt.selected = (i === offset); 
@@ -248,129 +208,201 @@
         render();
     }
 
-    function getRange() {
-        let s = new Date(); s.setHours(0,0,0,0);
-        let e = new Date(); e.setHours(23,59,59,999);
+    function render() {
+        let s = new Date(); s.setHours(0,0,0,0); let e = new Date(); e.setHours(23,59,59,999);
         if (mode === 'day') { s.setDate(s.getDate() + offset); e.setDate(e.getDate() + offset); }
         else if (mode === 'week') { s.setDate(s.getDate() - s.getDay() + (offset * 7)); e.setDate(s.getDate() + 6); }
         else if (mode === 'month') { s.setMonth(s.getMonth() + offset, 1); e = new Date(s.getFullYear(), s.getMonth() + 1, 0, 23, 59, 59); }
         else if (mode === 'year') { s.setFullYear(s.getFullYear() + offset, 0, 1); e.setFullYear(s.getFullYear() + offset, 11, 31); }
-        return { s, e };
-    }
-
-    function render() {
-        const range = getRange();
-        document.getElementById('period-info').innerText = `${range.s.toLocaleDateString()} 〜 ${range.e.toLocaleDateString()}`;
         
-        let hHtml = "", totalMV = 0;
+        document.getElementById('period-info').innerText = s.toLocaleDateString() + ' 〜 ' + e.toLocaleDateString();
+        
+        document.querySelectorAll('.period-nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + mode).classList.add('active');
+
+        // Toggle Calendar/List View
+        const calArea = document.getElementById('calendar-view');
+        const listArea = document.getElementById('history-list');
+        if (mode === 'month') {
+            calArea.style.display = 'block';
+            listArea.style.display = 'none';
+        } else {
+            calArea.style.display = 'none';
+            listArea.style.display = 'block';
+        }
+
+        let hHtml = ""; let totalMV = 0;
         holdings.forEach((h, i) => {
             const mv = (h.currentPrice || 0) * (h.qty || 0);
             const pl = mv - ((h.buyPrice || 0) * (h.qty || 0));
             totalMV += mv;
-            hHtml += `<div class="card ${pl>=0?'win':'loss'}">
-                <div class="card-actions"><button class="btn-mini btn-settle" onclick="settleHolding(${i})">決済</button><button class="btn-mini btn-delete" onclick="deleteHolding(${i})">削除</button></div>
-                <div style="font-size:10px; color:#888">${h.code}</div>
-                <div style="font-weight:bold">${h.name} / ${h.qty}株</div>
-                <div class="card-pl ${pl>=0?'pl-plus':'pl-minus'}">${mv.toLocaleString()}円 (${pl>=0?'+':''}${pl.toLocaleString()})</div>
-            </div>`;
+            const kabutanUrl = 'https://kabutan.jp/stock/chart?code=' + h.code;
+            
+            hHtml += '<div class="card ' + (pl>=0?'win':'loss') + '">' +
+                '<div class="card-actions">' +
+                    '<button class="btn-mini btn-settle" onclick="settleHolding('+i+')">決済</button>' +
+                    '<button class="btn-mini btn-edit" onclick="editHolding('+i+')">編集</button>' +
+                    '<button class="btn-mini btn-delete" onclick="deleteHolding('+i+')">削除</button>' +
+                '</div>' +
+                '<div style="font-size:10px; color:#888">' + h.code + '</div>' +
+                '<div style="font-weight:bold">' + 
+                    h.name + ' ' +
+                    '<a href="' + kabutanUrl + '" target="_blank" style="text-decoration:none; font-size:12px;">🔍</a>' + 
+                    ' / ' + h.qty + '株' +
+                '</div>' +
+                '<div class="card-pl ' + (pl>=0?'pl-plus':'pl-minus') + '">' + mv.toLocaleString() + '円 (' + (pl>=0?'+':'') + pl.toLocaleString() + ')</div>' +
+            '</div>';
         });
-        document.getElementById('holding-list').innerHTML = hHtml || '<div style="text-align:center; padding:10px; color:#ccc;">保有なし</div>';
+        document.getElementById('holding-list').innerHTML = hHtml || '<div style="text-align:center; padding:10px; color:#ccc;">なし</div>';
 
         let pNet = 0, allNet = 0, statsS = {}, statsV = {}, tHtml = "";
         trades.forEach((t, i) => {
-            allNet += t.pl;
+            allNet += (t.pl || 0);
             const d = new Date(t.date);
-            if (d >= range.s && d <= range.e) {
+            if (d >= s && d <= e) {
                 pNet += t.pl;
-                const sKey = t.name; const vKey = t.sector || "未分類";
-                [ [statsS, sKey], [statsV, vKey] ].forEach(([obj, k]) => {
+                const sk = t.name, vk = t.sector || "未分類";
+                [ [statsS, sk], [statsV, vk] ].forEach(([obj, k]) => {
                     if(!obj[k]) obj[k] = {pl:0, win:0, count:0};
                     obj[k].pl += t.pl; obj[k].count++; if(t.pl > 0) obj[k].win++;
                 });
-                tHtml += `<div class="card ${t.pl>=0?'win':'loss'}">
-                    <div class="card-actions">
-                        <button class="btn-mini btn-edit" onclick="editTrade(${i})">編集</button>
-                        <button class="btn-mini btn-delete" onclick="deleteTrade(${i})">削除</button>
-                    </div>
-                    <div style="font-size:10px; color:#888">${t.date}</div>
-                    <div style="font-weight:bold">${t.name} (${t.side})</div>
-                    <div class="card-pl ${t.pl>=0?'pl-plus':'pl-minus'}">${t.pl.toLocaleString()}円</div>
-                </div>`;
+                tHtml += '<div class="card ' + (t.pl>=0?'win':'loss') + '">' +
+                    '<div class="card-actions"><button class="btn-mini btn-edit" onclick="editTrade('+i+')">編集</button><button class="btn-mini btn-delete" onclick="deleteTrade('+i+')">削除</button></div>' +
+                    '<div style="font-size:10px; color:#888">' + t.date + '</div><div style="font-weight:bold">' + t.name + ' (' + t.side + ')</div>' +
+                    '<div class="card-pl ' + (t.pl>=0?'pl-plus':'pl-minus') + '">' + t.pl.toLocaleString() + '円</div>' +
+                '</div>';
             }
         });
-        document.getElementById('history-list').innerHTML = tHtml || '<div style="text-align:center; padding:20px; color:#ccc;">データなし</div>';
 
+        if (mode === 'month') drawCalendar(s, pNet);
+
+        document.getElementById('history-list').innerHTML = tHtml || '<div style="text-align:center; padding:20px; color:#ccc;">データなし</div>';
         document.getElementById('dash-period-pl').innerText = pNet.toLocaleString() + "円";
         document.getElementById('dash-total-before-tax').innerText = allNet.toLocaleString() + "円";
         document.getElementById('dash-holdings-val').innerText = totalMV.toLocaleString() + "円";
         
         const goal = goals[mode] || 0;
         const per = goal > 0 ? Math.min(100, Math.max(0, (pNet / goal) * 100)) : 0;
-        document.getElementById('goal-text').innerText = goal > 0 ? `目標 ${goal.toLocaleString()}円 (${Math.floor(per)}%)` : "目標設定";
+        document.getElementById('goal-text').innerText = goal > 0 ? '目標 ' + goal.toLocaleString() + '円 (' + Math.floor(per) + '%)' : "目標設定";
         document.getElementById('goal-bar').style.width = per + "%";
 
         const renderRank = (obj, id) => {
             let h = "";
             Object.keys(obj).sort((a,b)=>obj[b].pl - obj[a].pl).slice(0,5).forEach(k=>{
-                h += `<tr><td>${k}</td><td>${Math.round(obj[k].win/obj[k].count*100)}%</td><td class="${obj[k].pl>=0?'pl-plus':'pl-minus'}">${obj[k].pl.toLocaleString()}</td></tr>`;
+                h += '<tr><td>'+k+'</td><td>'+Math.round(obj[k].win/obj[k].count*100)+'%</td><td class="'+(obj[k].pl>=0?'pl-plus':'pl-minus')+'">'+obj[k].pl.toLocaleString()+'</td></tr>';
             });
-            document.getElementById(id).innerHTML = h || '<tr><td colspan="3">データなし</td></tr>';
+            document.getElementById(id).innerHTML = h || '<tr><td colspan="3">-</td></tr>';
         };
         renderRank(statsS, 'stock-stats-body'); renderRank(statsV, 'sector-stats-body');
     }
 
+    function drawCalendar(startDate, monthTotal) {
+        const grid = document.getElementById('calendar-grid');
+        grid.innerHTML = "";
+        ['日','月','火','水','木','金','土'].forEach(d => grid.innerHTML += `<div class="cal-day-head">${d}</div>`);
+        
+        const year = startDate.getFullYear();
+        const month = startDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        for(let i=0; i<firstDay; i++) grid.innerHTML += '<div></div>';
+
+        for(let d=1; d<=lastDate; d++) {
+            const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const dayPl = trades.filter(t => t.date === dateStr).reduce((sum, t) => sum + t.pl, 0);
+            const plClass = dayPl > 0 ? 'pl-plus' : dayPl < 0 ? 'pl-minus' : '';
+            const displayPl = dayPl !== 0 ? dayPl.toLocaleString() : '';
+            
+            grid.innerHTML += `<div class="cal-cell">
+                <div class="cal-date">${d}</div>
+                <div class="cal-pl ${plClass}">${displayPl}</div>
+            </div>`;
+        }
+        document.getElementById('calendar-total').innerHTML = `${month + 1}月の合計損益: <span class="${monthTotal>=0?'pl-plus':'pl-minus'}">${monthTotal.toLocaleString()}円</span>`;
+    }
+
     function saveTrade() {
         const manualPl = document.getElementById('t-manual-pl').value;
+        const side = document.getElementById('t-side').value;
+        let details = [], totalQtyIn = 0, totalValIn = 0, totalQtyOut = 0, totalValOut = 0;
+        document.querySelectorAll('.exec-row').forEach(r => {
+            const p = parseFloat(r.querySelector('.e-p').value) || 0;
+            const q = parseFloat(r.querySelector('.e-q').value) || 0;
+            const t = r.querySelector('.e-t').value;
+            details.push({p, q, t});
+            if(t === 'entry') { totalQtyIn += q; totalValIn += p * q; }
+            else { totalQtyOut += q; totalValOut += p * q; }
+        });
         let finalPl = 0;
-        if (manualPl !== "") {
-            finalPl = parseInt(manualPl);
-        } else {
-            const ps = document.querySelectorAll('.e-p'), qs = document.querySelectorAll('.e-q'), ts = document.querySelectorAll('.e-t');
-            let iV=0, oV=0;
-            ps.forEach((p,i) => { 
-                const pv=parseFloat(p.value)||0, qv=parseFloat(qs[i].value)||0; 
-                if(ts[i].value==='entry') iV+=pv*qv; else oV+=pv*qv; 
-            });
-            finalPl = (document.getElementById('t-side').value==='買'?(oV-iV):(iV-oV));
+        if (manualPl !== "") { finalPl = parseInt(manualPl); }
+        else if (totalQtyIn > 0 && totalQtyOut > 0) {
+            const avgIn = totalValIn / totalQtyIn;
+            const avgOut = totalValOut / totalQtyOut;
+            finalPl = (side === '買') ? (avgOut - avgIn) * totalQtyOut : (avgIn - avgOut) * totalQtyOut;
         }
         const data = {
-            date: document.getElementById('t-date').value || new Date().toISOString().split('T')[0],
+            date: document.getElementById('t-date').value,
             code: document.getElementById('t-code').value,
             name: document.getElementById('t-name').value || '未設定',
             sector: document.getElementById('t-sector').value,
-            side: document.getElementById('t-side').value,
-            pl: finalPl,
-            memo: document.getElementById('t-memo').value
+            side: side,
+            pl: Math.round(finalPl),
+            memo: document.getElementById('t-memo').value,
+            details: details
         };
         if (tEditIdx > -1) trades[tEditIdx] = data; else trades.unshift(data);
-        if(isSettleMode && hIdx > -1) holdings.splice(hIdx, 1);
+        if (isSettleMode && hIdx > -1) {
+            if (totalQtyOut >= holdings[hIdx].qty) holdings.splice(hIdx, 1);
+            else holdings[hIdx].qty -= totalQtyOut;
+        }
         saveAll(); resetTForm(); render();
+    }
+
+    function addRow(p="", q="", t="entry") {
+        const d = document.createElement('div'); d.className = 'exec-row';
+        d.innerHTML = '<input type="number" class="e-p" placeholder="単価" value="'+p+'"><input type="number" class="e-q" placeholder="枚数" value="'+q+'" step="100"><select class="e-t"><option value="entry" '+(t==='entry'?'selected':'')+'>IN</option><option value="exit" '+(t==='exit'?'selected':'')+'>OUT</option></select>';
+        document.getElementById('exec-list').appendChild(d);
     }
 
     function editTrade(i) {
         tEditIdx = i; const t = trades[i];
-        document.getElementById('t-form-container').classList.add('edit-mode-active');
+        document.getElementById('t-form-container').className = 'edit-form edit-mode-active';
         document.getElementById('edit-notice').style.display = "block";
         document.getElementById('t-date').value = t.date;
         document.getElementById('t-code').value = t.code;
         document.getElementById('t-name').value = t.name;
         document.getElementById('t-sector').value = t.sector;
+        document.getElementById('t-side').value = t.side;
+        document.getElementById('t-memo').value = t.memo || "";
         document.getElementById('t-manual-pl').value = t.pl;
+        document.getElementById('exec-list').innerHTML = "";
+        if(t.details) t.details.forEach(d => addRow(d.p, d.q, d.t)); else addRow();
+        document.getElementById('btn-t-cancel').style.display = "block";
+        window.scrollTo({ top: document.getElementById('t-section').offsetTop - 150, behavior: 'smooth' });
+    }
+
+    function settleHolding(i) {
+        const h = holdings[i]; isSettleMode = true; hIdx = i;
+        document.getElementById('t-form-container').className = 'edit-form settle-mode-active';
+        document.getElementById('settle-notice').style.display = "block";
+        document.getElementById('t-code').value = h.code; document.getElementById('t-name').value = h.name;
+        document.getElementById('t-sector').value = h.sector;
+        document.getElementById('exec-list').innerHTML = "";
+        addRow(h.buyPrice, h.qty, "entry"); addRow(h.currentPrice, h.qty, "exit");
         document.getElementById('btn-t-cancel').style.display = "block";
         window.scrollTo({ top: document.getElementById('t-section').offsetTop - 150, behavior: 'smooth' });
     }
 
     function resetTForm() {
         tEditIdx = -1; hIdx = -1; isSettleMode = false;
-        document.getElementById('t-form-container').classList.remove('edit-mode-active');
+        document.getElementById('t-form-container').className = 'edit-form';
         document.getElementById('edit-notice').style.display = "none";
         document.getElementById('settle-notice').style.display = "none";
         document.getElementById('exec-list').innerHTML = ""; addRow();
-        document.getElementById('t-manual-pl').value = "";
-        document.getElementById('t-code').value = "";
-        document.getElementById('t-name').value = "";
-        document.getElementById('t-sector').value = "";
-        document.getElementById('btn-t-cancel').style.display = "none";
+        document.getElementById('t-manual-pl').value = ""; document.getElementById('t-code').value = "";
+        document.getElementById('t-name').value = ""; document.getElementById('t-sector').value = "";
+        document.getElementById('t-memo').value = ""; document.getElementById('btn-t-cancel').style.display = "none";
     }
 
     function searchStock(pre) {
@@ -380,39 +412,58 @@
             document.getElementById(pre+'-sector').value = STOCK_MASTER[c][1];
         }
     }
-    function showHForm() { hIdx = -1; document.getElementById('h-editor').style.display='block'; }
+
+    function showHForm() { 
+        hEditIdx = -1; 
+        document.getElementById('h-editor').style.display='block'; 
+        document.getElementById('btn-h-save').innerText = "保有銘柄として保存";
+        document.getElementById('h-code').value = ""; document.getElementById('h-name').value = "";
+        document.getElementById('h-sector').value = ""; document.getElementById('h-qty').value = "";
+        document.getElementById('h-buy').value = ""; document.getElementById('h-now').value = "";
+    }
     function hideHForm() { document.getElementById('h-editor').style.display='none'; }
+    
+    function editHolding(i) {
+        hEditIdx = i;
+        const h = holdings[i];
+        document.getElementById('h-editor').style.display = 'block';
+        document.getElementById('btn-h-save').innerText = "更新する";
+        document.getElementById('h-code').value = h.code;
+        document.getElementById('h-name').value = h.name;
+        document.getElementById('h-sector').value = h.sector;
+        document.getElementById('h-qty').value = h.qty;
+        document.getElementById('h-buy').value = h.buyPrice;
+        document.getElementById('h-now').value = h.currentPrice;
+        window.scrollTo({ top: document.getElementById('h-editor').offsetTop - 100, behavior: 'smooth' });
+    }
+
     function saveHolding() {
-        const d = { 
-            code: document.getElementById('h-code').value, name: document.getElementById('h-name').value, 
-            sector: document.getElementById('h-sector').value, qty: parseFloat(document.getElementById('h-qty').value)||0, 
-            buyPrice: parseFloat(document.getElementById('h-buy').value)||0, currentPrice: parseFloat(document.getElementById('h-now').value)||0 
-        };
-        holdings.unshift(d); saveAll(); hideHForm(); render();
+        const code = document.getElementById('h-code').value.trim();
+        const name = document.getElementById('h-name').value;
+        const sector = document.getElementById('h-sector').value;
+        const qty = parseFloat(document.getElementById('h-qty').value) || 0;
+        const buyPrice = parseFloat(document.getElementById('h-buy').value) || 0;
+        const inputNow = parseFloat(document.getElementById('h-now').value);
+
+        if (!code) { alert("コードを入力してください"); return; }
+        const existIdx = holdings.findIndex(h => h.code === code);
+
+        if (hEditIdx > -1) {
+            holdings[hEditIdx] = { code, name, sector, qty, buyPrice, currentPrice: (isNaN(inputNow) ? holdings[hEditIdx].currentPrice : inputNow) };
+        } else if (existIdx > -1) {
+            const old = holdings[existIdx];
+            const newQty = old.qty + qty;
+            const newAvg = ((old.buyPrice * old.qty) + (buyPrice * qty)) / newQty;
+            holdings[existIdx].qty = newQty;
+            holdings[existIdx].buyPrice = Math.round(newAvg);
+            if (!isNaN(inputNow)) holdings[existIdx].currentPrice = inputNow;
+        } else {
+            holdings.unshift({ code, name, sector, qty, buyPrice, currentPrice: (isNaN(inputNow) ? 0 : inputNow) });
+        }
+        saveAll(); hideHForm(); render();
     }
-    function settleHolding(i) {
-        const h = holdings[i]; isSettleMode = true; hIdx = i;
-        document.getElementById('t-form-container').classList.add('edit-mode-active');
-        document.getElementById('settle-notice').style.display = "block";
-        document.getElementById('t-code').value = h.code; document.getElementById('t-name').value = h.name;
-        document.getElementById('t-sector').value = h.sector;
-        document.getElementById('exec-list').innerHTML = "";
-        addRow(h.buyPrice, h.qty, "entry"); addRow(h.currentPrice, h.qty, "exit");
-        document.getElementById('btn-t-cancel').style.display = "block";
-        window.scrollTo({ top: document.getElementById('t-section').offsetTop - 150, behavior: 'smooth' });
-    }
-    function addRow(p="", q="", t="entry") {
-        const d = document.createElement('div'); d.className = 'exec-row';
-        d.innerHTML = `<input type="number" class="e-p" placeholder="単価" value="${p}"><input type="number" class="e-q" placeholder="枚数" value="${q}"><select class="e-t"><option value="entry" ${t==='entry'?'selected':''}>IN</option><option value="exit" ${t==='exit'?'selected':''}>OUT</option></select>`;
-        document.getElementById('exec-list').appendChild(d);
-    }
-    function deleteTrade(i) { if(confirm("削除しますか？")) { trades.splice(i,1); saveAll(); render(); } }
-    function deleteHolding(i) { if(confirm("削除しますか？")) { holdings.splice(i,1); saveAll(); render(); } }
-    function refreshPastSectors() {
-        if(typeof STOCK_MASTER === 'undefined') return alert("マスタがありません。");
-        trades = trades.map(t => { if(STOCK_MASTER[t.code]) { t.name=STOCK_MASTER[t.code][0]; t.sector=STOCK_MASTER[t.code][1]; } return t; });
-        saveAll(); render(); alert("同期完了");
-    }
+    function deleteTrade(i) { if(confirm("削除？")) { trades.splice(i,1); saveAll(); render(); } }
+    function deleteHolding(i) { if(confirm("削除？")) { holdings.splice(i,1); saveAll(); render(); } }
 </script>
 </body>
 </html>
