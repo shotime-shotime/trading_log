@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradeLog - Professional Analytics</title>
     <script src="stocks.js"></script>
     <style>
@@ -63,6 +64,10 @@
         input, select, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
         .edit-form-highlight { border: 2px solid var(--gold) !important; background: #fffdf0 !important; }
         .edit-mode-active { border: 2px solid var(--primary) !important; background: #f0f7ff !important; }
+        
+        .admin-section { text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd; }
+        .btn-admin { padding: 8px 12px; font-size: 12px; margin: 5px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: white; }
+        .btn-danger { color: #dc3545; border-color: #dc3545; }
     </style>
 </head>
 <body>
@@ -156,6 +161,7 @@
     <div class="admin-section">
         <button class="btn-admin" onclick="refreshPastSectors()">🔄 過去データを最新マスタと同期</button>
         <button class="btn-admin" onclick="exportData()">💾 バックアップ</button>
+        <button class="btn-admin btn-danger" onclick="resetAllData()">⚠️ データを全て初期化</button>
     </div>
 </div>
 
@@ -164,8 +170,8 @@
     let holdings = JSON.parse(localStorage.getItem('trade_holdings')) || [];
     let goals = JSON.parse(localStorage.getItem('trade_goals')) || {day:0, week:0, month:0, year:0};
     
-    let hIdx = -1; // 保有銘柄の編集用
-    let tEditIdx = -1; // 履歴トレードの編集用
+    let hIdx = -1; 
+    let tEditIdx = -1; 
     let mode = 'day', offset = 0, isSettleMode = false;
     const TAX = 0.20315;
 
@@ -177,7 +183,17 @@
         localStorage.setItem('trade_goals', JSON.stringify(goals));
     }
 
-    // 目標設定
+    function resetAllData() {
+        if (confirm("【警告】すべての履歴・保有銘柄・目標設定が消去されます。本当によろしいですか？")) {
+            if (confirm("この操作は取り消せません。本当によろしいですか？")) {
+                localStorage.clear();
+                alert("データを初期化しました。");
+                location.reload();
+            }
+        }
+    }
+
+    // --- 以降、ご提示いただいたメインロジック ---
     function setGoal() {
         const d = prompt("1日の目標利益（円）:", goals.day || 0);
         if (d === null) return;
@@ -190,7 +206,6 @@
         saveAll(); render();
     }
 
-    // 期間切り替え
     function changeMode(m) { mode = m; offset = 0; updatePeriodUI(); }
     function offsetPeriod(d) { offset += d; updatePeriodUI(); }
     function jumpToHistory(v) { offset = parseInt(v); updatePeriodUI(); }
@@ -216,12 +231,10 @@
         return { s, e };
     }
 
-    // 描画メイン
     function render() {
         const range = getRange();
         document.getElementById('period-info').innerText = `${range.s.toLocaleDateString()} 〜 ${range.e.toLocaleDateString()}`;
         
-        // 保有
         let hHtml = "", totalMV = 0, totalFloating = 0;
         holdings.forEach((h, i) => {
             const mv = (h.currentPrice || 0) * (h.qty || 0);
@@ -236,7 +249,6 @@
         });
         document.getElementById('holding-list').innerHTML = hHtml || '<div style="text-align:center; padding:10px; color:#ccc;">なし</div>';
 
-        // 履歴
         let pNet = 0, allNet = 0, statsS = {}, statsV = {}, tHtml = "";
         trades.forEach((t, i) => {
             allNet += t.pl;
@@ -262,7 +274,6 @@
         });
         document.getElementById('history-list').innerHTML = tHtml || '<div style="text-align:center; padding:20px; color:#ccc;">履歴なし</div>';
 
-        // ダッシュボード更新
         document.getElementById('dash-period-pl').innerText = pNet.toLocaleString() + "円";
         document.getElementById('dash-period-pl').className = "value " + (pNet>=0?'pl-plus':'pl-minus');
         document.getElementById('dash-total-before-tax').innerText = allNet.toLocaleString() + "円";
@@ -270,13 +281,11 @@
         document.getElementById('dash-holdings-val').innerText = totalMV.toLocaleString() + "円";
         document.getElementById('dash-holdings-diff').innerText = `(${totalFloating>=0?'+':''}${totalFloating.toLocaleString()})`;
         
-        // 目標バー
         const goal = goals[mode] || 0;
         const per = goal > 0 ? Math.min(100, Math.max(0, (pNet / goal) * 100)) : 0;
         document.getElementById('goal-text').innerText = goal > 0 ? `目標 ${goal.toLocaleString()}円 (${Math.floor(per)}%)` : "目標未設定";
         document.getElementById('goal-bar').style.width = per + "%";
 
-        // 統計ランキング表示
         const renderRank = (obj, id) => {
             let h = "";
             Object.keys(obj).sort((a,b)=>obj[b].pl - obj[a].pl).slice(0,5).forEach(k=>{
@@ -287,14 +296,12 @@
         renderRank(statsS, 'stock-stats-body'); renderRank(statsV, 'sector-stats-body');
     }
 
-    // トレード履歴の削除
     function deleteTrade(i) {
         if(confirm("この履歴を削除しますか？")) {
             trades.splice(i, 1); saveAll(); render();
         }
     }
 
-    // トレード履歴の編集開始
     function editTrade(i) {
         tEditIdx = i;
         const t = trades[i];
@@ -307,13 +314,12 @@
         document.getElementById('t-side').value = t.side;
         document.getElementById('t-memo').value = t.memo || "";
         document.getElementById('t-manual-pl').value = t.pl;
-        document.getElementById('exec-list').innerHTML = ""; // 編集時は手動計算を優先
+        document.getElementById('exec-list').innerHTML = ""; 
         document.getElementById('btn-t-cancel').style.display = "block";
         document.getElementById('btn-t-save').innerText = "修正内容で上書き保存";
         window.scrollTo(0, document.getElementById('t-section').offsetTop - 160);
     }
 
-    // トレード保存（新規・決済・編集共通）
     function saveTrade() {
         const manualPl = document.getElementById('t-manual-pl').value;
         let finalPl = 0;
@@ -341,9 +347,9 @@
         };
 
         if (tEditIdx > -1) {
-            trades[tEditIdx] = data; // 編集上書き
+            trades[tEditIdx] = data;
         } else {
-            trades.unshift(data); // 新規追加
+            trades.unshift(data);
         }
 
         if(isSettleMode && hIdx > -1) holdings.splice(hIdx, 1);
@@ -351,7 +357,6 @@
         saveAll(); resetTForm(); render();
     }
 
-    // 入力フォームリセット
     function resetTForm() {
         tEditIdx = -1; hIdx = -1; isSettleMode = false;
         document.getElementById('t-form-container').classList.remove('edit-form-highlight', 'edit-mode-active');
@@ -364,7 +369,6 @@
         document.getElementById('btn-t-save').innerText = "トレードを保存";
     }
 
-    // --- その他既存関数 ---
     function searchStock(pre) {
         const c = document.getElementById(pre+'-code').value.trim();
         if(typeof STOCK_MASTER !== 'undefined' && STOCK_MASTER[c]) {
@@ -401,6 +405,7 @@
     function deleteHolding(i) { if(confirm("消しますか？")) { holdings.splice(i,1); saveAll(); render(); } }
     function exportData() { const blob = new Blob([JSON.stringify({trades,holdings,goals})], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'TradeLog_Backup.json'; a.click(); }
     function refreshPastSectors() {
+        if(typeof STOCK_MASTER === 'undefined') return alert("銘柄マスタが見つかりません。");
         trades = trades.map(t => { if(STOCK_MASTER[t.code]) { t.name=STOCK_MASTER[t.code][0]; t.sector=STOCK_MASTER[t.code][1]; } return t; });
         saveAll(); render(); alert("同期完了");
     }
