@@ -37,6 +37,9 @@
         .goal-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: bold; }
         .progress-bg { background: #eee; height: 12px; border-radius: 6px; overflow: hidden; }
         .progress-bar { background: linear-gradient(90deg, var(--primary), #00c6ff); height: 100%; transition: 0.5s; width: 0%; }
+        
+        /* 目標設定用インライン入力 */
+        #goal-edit-area { display: none; background: #f0f7ff; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
 
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         @media (max-width: 600px) { .analytics-grid { grid-template-columns: 1fr; } }
@@ -59,26 +62,10 @@
         .btn-edit { background: #e3f2fd; color: var(--primary); }
         .btn-delete { background: #ffebee; color: #c62828; }
 
-        /* 【重要】入力フォームのレイアウト修正 */
         .edit-form { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; }
-        .form-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; /* スマホでは2列 */
-            gap: 10px; 
-            margin-bottom: 10px; 
-        }
-        /* PC（広い画面）では1行に並べる */
-        @media (min-width: 768px) {
-            .form-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
-        }
-
-        /* 実行履歴（単価・枚数・IN/OUT）のスマホ最適化 */
-        .exec-row { 
-            display: grid; 
-            grid-template-columns: 1.2fr 1fr 0.8fr; /* 3項目をバランスよく配置 */
-            gap: 8px; 
-            margin-bottom: 8px; 
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        @media (min-width: 768px) { .form-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); } }
+        .exec-row { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: 8px; margin-bottom: 8px; }
 
         .btn-main { background: var(--dark); color: white; width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; font-size: 15px; }
         input, select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; width: 100%; box-sizing: border-box; background: white; }
@@ -86,7 +73,8 @@
         
         .admin-section { text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #ddd; }
         .btn-admin { padding: 10px; font-size: 12px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; background: white; width: 100%; max-width: 250px; }
-        
+        #delete-confirm-area { display: none; background: #fff0f0; border: 1px solid var(--danger); padding: 15px; border-radius: 12px; margin-top: 10px; }
+
         .pl-plus { color: var(--success) !important; }
         .pl-minus { color: var(--danger) !important; }
     </style>
@@ -116,7 +104,17 @@
     </div>
 
     <div class="goal-container">
-        <div class="goal-header"><span>🎯 期間目標進捗</span><span id="goal-text" onclick="setGoal()" style="cursor:pointer; text-decoration:underline; color:var(--primary)">目標設定</span></div>
+        <div class="goal-header">
+            <span>🎯 期間目標進捗</span>
+            <span id="goal-text" onclick="toggleGoalEdit()" style="cursor:pointer; text-decoration:underline; color:var(--primary)">目標設定</span>
+        </div>
+        <div id="goal-edit-area">
+            <div style="display:flex; gap:8px;">
+                <input type="number" id="goal-input-val" placeholder="1日の目標(円)">
+                <button class="btn-mini" style="background:var(--primary); color:white; width:70px;" onclick="applyGoal()">OK</button>
+            </div>
+            <p style="font-size:10px; color:#666; margin:5px 0 0 0;">※日当を入力すると週・月・年も自動計算されます</p>
+        </div>
         <div class="progress-bg"><div id="goal-bar" class="progress-bar"></div></div>
     </div>
 
@@ -163,17 +161,13 @@
                 <input type="text" id="t-name" placeholder="銘柄名" readonly style="background:#eee">
                 <input type="text" id="t-sector" placeholder="セクター" readonly style="background:#eee">
             </div>
-
             <div id="exec-list"></div>
-            
             <div class="form-grid" style="margin-top:10px;">
                 <button class="btn-mini" style="background:#eee; height:45px;" onclick="addRow()">+ 行追加</button>
                 <select id="t-side" style="height:45px;"><option value="買">買</option><option value="売">売</option></select>
             </div>
-            
             <input type="number" id="t-manual-pl" placeholder="損益を手動入力(任意)" style="margin-top:10px;">
             <textarea id="t-memo" placeholder="トレードメモ..." style="width:100%; height:80px; margin-top:10px;"></textarea>
-            
             <button class="btn-main" id="btn-t-save" onclick="saveTrade()">トレードを保存</button>
             <button id="btn-t-cancel" class="btn-main" style="display:none; background:#ccc;" onclick="resetTForm()">キャンセル</button>
         </div>
@@ -184,8 +178,13 @@
 
     <div class="admin-section">
         <button class="btn-admin" onclick="refreshPastSectors()">🔄 最新マスタと同期</button>
-        <button class="btn-admin" onclick="exportData()">💾 バックアップ</button>
-        <button class="btn-admin" style="color:red; border-color:red;" onclick="resetAllData()">⚠️ 全データ消去</button>
+        <button class="btn-admin" style="color:red; border-color:red;" onclick="showDeleteConfirm()">⚠️ 全データ消去</button>
+        
+        <div id="delete-confirm-area">
+            <p style="font-size:12px; font-weight:bold; color:var(--danger); margin-bottom:10px;">【警告】すべてのデータを完全に消去します。よろしいですか？</p>
+            <button class="btn-main" style="background:var(--danger)" onclick="resetAllData()">はい、消去します</button>
+            <button class="btn-main" style="background:#999; margin-top:5px;" onclick="hideDeleteConfirm()">キャンセル</button>
+        </div>
     </div>
 </div>
 
@@ -195,7 +194,6 @@
     let goals = JSON.parse(localStorage.getItem('trade_goals')) || {day:0, week:0, month:0, year:0};
     
     let hIdx = -1, tEditIdx = -1, mode = 'day', offset = 0, isSettleMode = false;
-    const TAX = 0.20315;
 
     window.onload = () => { 
         document.getElementById('t-date').valueAsDate = new Date();
@@ -209,30 +207,30 @@
         localStorage.setItem('trade_goals', JSON.stringify(goals));
     }
 
-    function setGoal() {
-        setTimeout(() => {
-            const d = prompt("1日の目標利益（円）を入力してください:", goals.day || 0);
-            if (d === null) return;
-            const dayGoal = parseInt(d.replace(/,/g,'')) || 0;
-            if (confirm("他の期間（週・月・年）も自動計算（5日/20日/240日換算）して更新しますか？")) {
-                goals.day = dayGoal; goals.week = dayGoal * 5; goals.month = dayGoal * 20; goals.year = dayGoal * 240;
-            } else {
-                goals.day = dayGoal;
-            }
-            saveAll(); render();
-        }, 100);
+    // --- 目標設定UI ---
+    function toggleGoalEdit() {
+        const area = document.getElementById('goal-edit-area');
+        area.style.display = area.style.display === 'block' ? 'none' : 'block';
+        document.getElementById('goal-input-val').value = goals.day || 0;
+    }
+    function applyGoal() {
+        const dayGoal = parseInt(document.getElementById('goal-input-val').value) || 0;
+        goals.day = dayGoal; 
+        goals.week = dayGoal * 5; 
+        goals.month = dayGoal * 20; 
+        goals.year = dayGoal * 240;
+        saveAll();
+        document.getElementById('goal-edit-area').style.display = 'none';
+        render();
     }
 
+    // --- 全データ削除UI ---
+    function showDeleteConfirm() { document.getElementById('delete-confirm-area').style.display = 'block'; }
+    function hideDeleteConfirm() { document.getElementById('delete-confirm-area').style.display = 'none'; }
     function resetAllData() {
-        setTimeout(() => {
-            if (confirm("【警告】すべてのデータを完全に消去します。よろしいですか？")) {
-                if (confirm("本当によろしいですね？この操作は取り消せません。")) {
-                    localStorage.clear();
-                    alert("すべてのデータを削除しました。");
-                    location.reload();
-                }
-            }
-        }, 100);
+        localStorage.clear();
+        alert("すべてのデータを削除しました。");
+        location.reload();
     }
 
     function changeMode(m) { mode = m; offset = 0; updatePeriodUI(); }
@@ -264,11 +262,11 @@
         const range = getRange();
         document.getElementById('period-info').innerText = `${range.s.toLocaleDateString()} 〜 ${range.e.toLocaleDateString()}`;
         
-        let hHtml = "", totalMV = 0, totalFloating = 0;
+        let hHtml = "", totalMV = 0;
         holdings.forEach((h, i) => {
             const mv = (h.currentPrice || 0) * (h.qty || 0);
             const pl = mv - ((h.buyPrice || 0) * (h.qty || 0));
-            totalMV += mv; totalFloating += pl;
+            totalMV += mv;
             hHtml += `<div class="card ${pl>=0?'win':'loss'}">
                 <div class="card-actions"><button class="btn-mini btn-settle" onclick="settleHolding(${i})">決済</button><button class="btn-mini btn-delete" onclick="deleteHolding(${i})">削除</button></div>
                 <div style="font-size:10px; color:#888">${h.code}</div>
@@ -408,13 +406,12 @@
         d.innerHTML = `<input type="number" class="e-p" placeholder="単価" value="${p}"><input type="number" class="e-q" placeholder="枚数" value="${q}"><select class="e-t"><option value="entry" ${t==='entry'?'selected':''}>IN</option><option value="exit" ${t==='exit'?'selected':''}>OUT</option></select>`;
         document.getElementById('exec-list').appendChild(d);
     }
-    function deleteTrade(i) { if(confirm("トレード履歴を削除しますか？")) { trades.splice(i,1); saveAll(); render(); } }
-    function deleteHolding(i) { if(confirm("保有銘柄を削除しますか？")) { holdings.splice(i,1); saveAll(); render(); } }
-    function exportData() { const blob = new Blob([JSON.stringify({trades,holdings,goals})], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'TradeLog_Backup.json'; a.click(); }
+    function deleteTrade(i) { if(confirm("削除しますか？")) { trades.splice(i,1); saveAll(); render(); } }
+    function deleteHolding(i) { if(confirm("削除しますか？")) { holdings.splice(i,1); saveAll(); render(); } }
     function refreshPastSectors() {
-        if(typeof STOCK_MASTER === 'undefined') return alert("銘柄マスタが読み込まれていません。");
+        if(typeof STOCK_MASTER === 'undefined') return alert("マスタがありません。");
         trades = trades.map(t => { if(STOCK_MASTER[t.code]) { t.name=STOCK_MASTER[t.code][0]; t.sector=STOCK_MASTER[t.code][1]; } return t; });
-        saveAll(); render(); alert("過去ログの銘柄情報を最新に同期しました。");
+        saveAll(); render(); alert("同期完了");
     }
 </script>
 </body>
